@@ -7,16 +7,16 @@
         <button @click="closeRegistration" type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="registrationForm" @click.prevent="submitRegistration">
+        <form id="registrationForm" @submit.prevent="submitRegistration" autocomplete="off">
           <div class="row">
             <div class="col">
               <div class="mb-3">
-                <input type="text" required class="form-control" v-model="lastname" placeholder="enter Last Name" autocomplete="off">
+                <input class="form-control" placeholder="enter Last Name" autocomplete="off" v-model="lastname" required type="text" />
               </div>
             </div>
             <div class="col">
               <div class="mb-3">
-                <input type="text" required class="form-control" v-model="firstname" placeholder="enter First Name" autocomplete="off">
+                <input type="text" required class="form-control" v-model="firstname" placeholder="enter First Name" autocomplete="off" />
               </div>
             </div>
           </div>
@@ -65,7 +65,7 @@
    }
 </style>
 
-<script>
+<script lang="ts">
     import { defineComponent } from 'vue';
     import $ from 'jquery';
     import axios from 'axios';
@@ -80,17 +80,18 @@
         name: 'Register-User',
         data() {
           return {
-            lastname: String,
-            firstname: String,
-            email: String,
-            mobile: String,
-            username: String,
-            password: String,
-            registerMsg: String
+            lastname: '',
+            firstname: '',
+            email: '',
+            mobile: '',
+            username: '',
+            password: '',
+            registerMsg: ''
           }
         },
         methods:{
           closeRegistration: function() {
+            this.registerMsg = '';
             $("#registerReset").click();
           },
           submitRegistration: function() {
@@ -102,15 +103,20 @@
             .then((res) => {
                 if (res.data.statuscode == 200) {
                     this.registerMsg = res.data.message;
-
                     return;
                 } else {
                   this.registerMsg = res.data.message;
-                    return;
+                  window.setTimeout(() => {
+                    this.registerMsg = '';
+                  }, 3000);
+                  return;
                 }
               }, (error) => {
                     this.registerMsg = error.message;
-                    return;
+                    window.setTimeout(() => {
+                    this.registerMsg = '';
+                  }, 3000);
+                  return;
             });
 
             $("#registerReset").click();

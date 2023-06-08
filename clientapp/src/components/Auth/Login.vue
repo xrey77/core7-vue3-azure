@@ -9,7 +9,7 @@
         <button id="closeLogin" @click="closeLogin" type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="loginForm" @submit.prevent="submitLogin">
+        <form id="loginForm" @submit.prevent="submitLogin" autocomplete="off">
           <div class="mb-3">
             <input type="text" required class="form-control" v-model="username" placeholder="enter Username" autocomplete="off">
         </div>
@@ -41,7 +41,7 @@
   }
 </style>
 
-<script>
+<script lang="ts">
     import { defineComponent } from 'vue';
     import Mfa from './Mfa.vue';
     import $ from 'jquery';
@@ -60,17 +60,18 @@
     },
     data() {
       return {
-        username: "",
-        password: "",
-        loginMessage: ""
+        username: '',
+        password: '',
+        loginMessage: ''
       }
     },
     methods: {
         closeLogin: function() {
+            this.loginMessage = '';
             $("#loginReset").click();
         },
         submitLogin: function() {    
-          this.loginMessage="Please wait...";
+          this.loginMessage='Please wait...';
             const data =JSON.stringify({ username: this.username, password: this.password });
             api.post("/signin", data)
             .then((res) => {
@@ -92,7 +93,6 @@
                         sessionStorage.setItem('ROLE',res.data.roles);
                         sessionStorage.setItem('USERPIC',res.data.profilepic);
                         $("#loginReset").click();
-                        // this.$router.push('/');
                         window.location.reload();
                     }
                     return;

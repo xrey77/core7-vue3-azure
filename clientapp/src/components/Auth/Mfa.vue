@@ -78,6 +78,7 @@
         },
         closeMfa: function() {
             $("#mfaReset").click();
+            this.otpMessage = '';
             sessionStorage.removeItem('USERID');
             sessionStorage.removeItem('USERNAME');
             sessionStorage.removeItem('TOKEN');
