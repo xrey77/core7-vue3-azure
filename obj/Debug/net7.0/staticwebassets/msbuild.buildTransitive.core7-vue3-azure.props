@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/core7-vue3-azure.props" />
+</Project>
